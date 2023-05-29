@@ -23,7 +23,7 @@ $error = "";
        
      
         $_SESSION['id'] = $user['Codice'];
-        header("location: inside.php");
+        header("location: dashboard.php");
       
     }
 

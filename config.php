@@ -13,7 +13,7 @@ define('STRIPE_CANCEL_URL', 'http://localhost/piumenophp/cancel.php');
 define('DB_HOST', 'localhost');  
 define('DB_USERNAME', 'root');  
 define('DB_PASSWORD', '');  
-define('DB_NAME', 'db'); // WRTIE, your db name
+define('DB_NAME', 'users'); // WRTIE, your db name
 ?>
 
 

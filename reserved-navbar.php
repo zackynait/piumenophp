@@ -38,12 +38,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./buy-vouchers.php">
+                        <a class="nav-link" href="./buy_voucher.php">
                             <i class="bi bi-bar-chart"></i> Acquista Vouchers
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./buy-track.php">
+                        <a class="nav-link" href="./buy_track.php">
                             <i class="bi bi-bookmarks"></i> Acquista Tratta
                         </a>
                     </li>
