@@ -20,16 +20,8 @@ include_once "./utils/company_name_selector.php";
 $vouchers=VoucherModel::get_all()->fetch_all(MYSQLI_ASSOC);
 $subscriptions=SubscriptionModel::get_all()->fetch_all(MYSQLI_ASSOC);
 $weights=WeightsModel::get_all()->fetch_all(MYSQLI_ASSOC);
-$mysubs=SubscriptionModel::get_my_voucher( $_SESSION['id'])->fetch_all(MYSQLI_ASSOC);//in base all'utente-- if problem mandalo su un'altra pagina stampa id 
-/*echo json_encode($mysubs);
-//$allhisub=[];
-foreach($mysubs  as $sub)
-{
-    array_push($allhisub,$sub["Tipo_di_abbonamento"]);
-}//value	validexpire_datetext	descr	status  start	    end	    measure
-//$allhisub=array_unique($allhisub);
-//$allhisub=array_values($allhisub);
-//echo json_encode($allhisub);*/
+$mysubs=SubscriptionModel::get_my_voucher( $_SESSION['id'])->fetch_all(MYSQLI_ASSOC); //in base all'utente-- if problem mandalo su un'altra pagina stampa id 
+
 ?>
 <div class="h-screen flex-grow-1 overflow-y-lg-auto">
 <main class="py-6 bg-surface-secondary">
@@ -97,23 +89,11 @@ foreach($mysubs  as $sub)
   </div>   </div>   </div>  
 
 
-
-
-
 </div>   </div>   </div>  
-
 
 <div class="container" id="paymentResponse">
 
-
-
 </main> </div>   </div>
-
-
-
-
-
-
 
 
 
@@ -121,7 +101,6 @@ foreach($mysubs  as $sub)
   var  cqr={};//  <button class="btn btn-primary" class="submit" type="submit" onclick="all_validation()">fai preventivo</button>
   var ab_name="";
 // Example starter JavaScript for disabling form submissions if there are invalid fields
-
 
 
 function all_validation(){
@@ -159,11 +138,12 @@ console.log(cqr);
 $("#preventivo").remove();
 
 
-$(".main").append('   <div id=\"preventivo\" class=\"col-11 col-sm-9 col-md-7 col-lg-6 text-center p-0 mt-3 mb-2\">\
+$(".main").append('<div id=\"preventivo\" class=\"col-11 col-sm-9 col-md-7 col-lg-6 text-center p-0 mt-3 mb-2\">\
             <div class=\"card\">\
             <table class=\"table outset-neomo\">\
-  <thead> <tr>   <th>numero di lettere di vettura </th>  <th>Costo per lettera di vettura</th>  <th>Costo imponibile Carnet</th> <th>Diritto Fisso imponibile</th>    <th>Costo carnet totale iva inclusa</th> <th></th>  </tr> </thead>\
-  <tbody>    <tr> <td class=\"qta\">'+cqr["Quantita_lettere_di_vettura"]+'</td>   <td>'+cqr["Costo per lettera di vettura"]+'€</td> <td>'+cqr["Costo imponibile Carnet"]+' €</td>      <td>'+cqr["Diritto Fisso imponibile"]+' €</td>       <td class=\"price\">'+cqr["Costo carnet totale iva inclusa"]+' €</td> <td><button onclick="paying()" class=\"outset-neomo m-10\"  id=\"payButton\">Acquista Ora</button></td>   </tr> </tbody></table>\
+            <thead> <tr>   <th>numero di lettere di vettura </th>  <th>Costo per lettera di vettura</th>  <th>Costo imponibile Carnet</th> <th>Diritto Fisso imponibile</th>    <th>Costo carnet totale iva inclusa</th> <th></th>  </tr> </thead>\
+            <tbody>    <tr> <td class=\"qta\">'+cqr["Quantita_lettere_di_vettura"]+'</td>   <td>'+cqr["Costo per lettera di vettura"]+'€</td> <td>'+cqr["Costo imponibile Carnet"]+' €</td>      <td>'+cqr["Diritto Fisso imponibile"]+' €</td>  \
+             <td class=\"price\">'+cqr["Costo carnet totale iva inclusa"]+' €</td> <td><button onclick="paying()" class=\"outset-neomo m-10\"  id=\"payButton\">Acquista Ora</button></td>   </tr> </tbody></table>\
           </div>   </div> '
 )
 console.log("appeso");

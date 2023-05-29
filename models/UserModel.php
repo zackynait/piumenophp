@@ -5,8 +5,13 @@ require_once  "config.php";
 class UserModel
 {
     public static function get_all(){
-        $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-        $sql = "SELECT * FROM users_cityex";
+        $connection = new mysqli("localhost","root","","users");
+
+        // Check connection
+        if ($connection -> connect_errno) {
+          echo "Failed to connect to MySQL: " . $connection -> connect_error;
+          exit();
+        }        $sql = "SELECT * FROM users_cityex";
         $stmt = $connection->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -17,8 +22,13 @@ class UserModel
 
 
     public static function find_by_email($email){
-        $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-        $sql = "SELECT * FROM users WHERE email=?";
+        $connection = new mysqli("localhost","root","","users");
+
+        // Check connection
+        if ($connection -> connect_errno) {
+          echo "Failed to connect to MySQL: " . $connection -> connect_error;
+          exit();
+        }        $sql = "SELECT * FROM users WHERE email=?";
         $stmt = $connection->prepare($sql);
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -28,8 +38,13 @@ class UserModel
         return $result;
     }
     public static function clear_reset_password_token($token){
-        $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-        $sql = "update users set reset_password=null where reset_password=?";
+        $connection = new mysqli("localhost","root","","users");
+
+        // Check connection
+        if ($connection -> connect_errno) {
+          echo "Failed to connect to MySQL: " . $connection -> connect_error;
+          exit();
+        }        $sql = "update users set reset_password=null where reset_password=?";
         $stmt = $connection->prepare($sql);
         $stmt->bind_param("s", $token);
         $stmt->execute();
@@ -40,8 +55,13 @@ class UserModel
     }
 
     public static function find_by_linkedin_id($token){
-        $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-        $sql = "SELECT * FROM users WHERE linkedin_id=?";
+        $connection = new mysqli("localhost","root","","users");
+
+        // Check connection
+        if ($connection -> connect_errno) {
+          echo "Failed to connect to MySQL: " . $connection -> connect_error;
+          exit();
+        }        $sql = "SELECT * FROM users WHERE linkedin_id=?";
         $stmt = $connection->prepare($sql);
         $stmt->bind_param("s", $token);
         $stmt->execute();
@@ -54,8 +74,13 @@ class UserModel
     public static function find_by_token($token){
         $session = SessionModel::find_by_token($token);
         if(!isset($session) or empty($session)) return null;
-        $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-        $sql = "SELECT * FROM users where id=?";
+        $connection = new mysqli("localhost","root","","users");
+
+        // Check connection
+        if ($connection -> connect_errno) {
+          echo "Failed to connect to MySQL: " . $connection -> connect_error;
+          exit();
+        }        $sql = "SELECT * FROM users where id=?";
         $stmt = $connection->prepare($sql);
         $stmt->bind_param("i", $session["user_id"]);
         $stmt->execute();
@@ -68,8 +93,13 @@ class UserModel
     }
 
     public static function find_by_password_recovery_token($token){
-        $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-        $sql = "select * from users where reset_password=?";
+        $connection = new mysqli("localhost","root","","users");
+
+        // Check connection
+        if ($connection -> connect_errno) {
+          echo "Failed to connect to MySQL: " . $connection -> connect_error;
+          exit();
+        }        $sql = "select * from users where reset_password=?";
         $stmt = $connection->prepare($sql);
         $stmt->bind_param("s", $token);
         $stmt->execute();
@@ -88,8 +118,13 @@ class UserModel
      */
     public static function create($conn, $user){
         //create your own connection if connection is not provided
-        $connection = $conn ?? mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+        $connection = new mysqli("localhost","root","","users");
 
+        // Check connection
+        if ($connection -> connect_errno) {
+          echo "Failed to connect to MySQL: " . $connection -> connect_error;
+          exit();
+        }
         $user["password"] = isset($user["password"]) ? password_hash($user["password"], PASSWORD_DEFAULT) : null;
         $user["verify_email"] = uniqid();
 
@@ -106,8 +141,13 @@ class UserModel
 
     public static function update($conn, $id, $update){
         //create your own connection if connection is not provided
-        $connection = $conn ?? mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-        $sql = create_update_query($connection, "users", $update, "id", $id);
+        $connection = new mysqli("localhost","root","","users");
+
+        // Check connection
+        if ($connection -> connect_errno) {
+          echo "Failed to connect to MySQL: " . $connection -> connect_error;
+          exit();
+        }        $sql = create_update_query($connection, "users", $update, "id", $id);
 
         if($connection->query($sql) and $connection->affected_rows>0){
             $out = true;
@@ -129,7 +169,14 @@ class UserModel
 
     public static function login($conn, $username, $password){
         //create your own connection if connection is not provided
-        $connection = $conn ?? mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+        $connection = new mysqli("localhost","root","","users");
+
+        // Check connection
+        if ($connection -> connect_errno) {
+        echo "Failed to connect to MySQL: " . $connection -> connect_error;
+        exit();
+        }
+
         $sql ="SELECT * FROM users_cityex WHERE Posta_elettronica=? limit 1";
         $stmt = $connection->prepare($sql);
         $stmt->bind_param("s", $username);
@@ -148,7 +195,13 @@ class UserModel
     }
    
     public static function changePassword($password, $token){
-        $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+       $connection = new mysqli("localhost","root","","users");
+
+// Check connection
+if ($connection -> connect_errno) {
+  echo "Failed to connect to MySQL: " . $connection -> connect_error;
+  exit();
+}
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $query = "update users set password=? where reset_password=?";
         $stmt = $connection->prepare($query);

@@ -4,8 +4,13 @@ require_once  "config.php";
 class WeightsModel
 {
     public static function get_all(){
-        $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-        $sql = "SELECT * FROM weights";
+        $connection = new mysqli("localhost","root","","users");
+
+        // Check connection
+        if ($connection -> connect_errno) {
+          echo "Failed to connect to MySQL: " . $connection -> connect_error;
+          exit();
+        }        $sql = "SELECT * FROM weights";
         $stmt = $connection->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();

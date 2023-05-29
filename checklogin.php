@@ -6,7 +6,15 @@ if(!session_id())
 
 
 require_once "./models/UserModel.php";
-$connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+$connection = new mysqli("localhost","root","","users");
+
+// Check connection
+if ($connection -> connect_errno) {
+  echo "Failed to connect to MySQL: " . $connection -> connect_error;
+  exit();
+}
+
+
 $error = "";
 
     // username and password sent from form
@@ -23,7 +31,7 @@ $error = "";
        
      
         $_SESSION['id'] = $user['Codice'];
-        header("location: inside.php");
+        header("location: dashboard.php");
       
     }
 

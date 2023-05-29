@@ -4,8 +4,13 @@ require_once  "config.php";
 class trattaModel
 {
     public static function find_one($id){
-        $connection =  mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-        $sql = "SELECT * FROM companies c 
+        $connection = new mysqli("localhost","root","","users");
+
+        // Check connection
+        if ($connection -> connect_errno) {
+          echo "Failed to connect to MySQL: " . $connection -> connect_error;
+          exit();
+        }        $sql = "SELECT * FROM companies c 
             WHERE company_id=?";
         $stmt = $connection->prepare($sql);
         $stmt->bind_param("i", $id);
@@ -20,8 +25,13 @@ class trattaModel
         }
     }
     public static function find_by_name($name){
-        $connection =  mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-        $sql = "SELECT company_id FROM companies WHERE name=?";
+        $connection = new mysqli("localhost","root","","users");
+
+        // Check connection
+        if ($connection -> connect_errno) {
+          echo "Failed to connect to MySQL: " . $connection -> connect_error;
+          exit();
+        }        $sql = "SELECT company_id FROM companies WHERE name=?";
         $stmt = $connection->prepare($sql);
         $stmt->bind_param("s", $name);
         $stmt->execute();
@@ -32,8 +42,13 @@ class trattaModel
     }
 
     public static function search_by_name($name){
-        $connection =  mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-        $name = "%$name%";
+        $connection = new mysqli("localhost","root","","users");
+
+        // Check connection
+        if ($connection -> connect_errno) {
+          echo "Failed to connect to MySQL: " . $connection -> connect_error;
+          exit();
+        }        $name = "%$name%";
         $sql = "SELECT * FROM cap WHERE cap_number like ? order by cap_number";
         $stmt = $connection->prepare($sql);
         $stmt->bind_param("s", $name);
@@ -45,8 +60,13 @@ class trattaModel
     }
 
     public static function get_all_caps(){
-        $connection =  mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-        $sql = "SELECT * FROM cap";
+        $connection = new mysqli("localhost","root","","users");
+
+        // Check connection
+        if ($connection -> connect_errno) {
+          echo "Failed to connect to MySQL: " . $connection -> connect_error;
+          exit();
+        }        $sql = "SELECT * FROM cap";
         $stmt = $connection->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();

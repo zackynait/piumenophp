@@ -42,15 +42,15 @@ $allcaps=TrattaModel::get_all_caps()->fetch_all(MYSQLI_ASSOC);
                 <label for="validationDefault43" class="form-label">Destinazione</label>
                 <select class="form-select" id="validationDefault43" required>
                   <option selected value="">Scegli...</option>
-                  <option id="nazionale">Nazionale</option>
-                  <option id="raccomandata">Raccomandata</option>
+                  <option id="1">Nazionale</option>
+                  <option id="2">Raccomandata</option>
                 </select>
                 </div>
                 <div class="col-md-3">
                   <label for="validationDefault44" class="form-label">Tipo di servizio</label>
                   <select class="form-select" id="validationDefault44" required>
                   <option selected value="">Choose...</option>
-                  <option id="Espresso">Espressp</option>
+                  <option id="Espresso">Espresso</option>
                   <option id="Raccomandata">Raccomandata</option>
                   <option id="Golden" >Golden</option>
                   <option id="Camionistico">Camionistico</option>
@@ -160,7 +160,7 @@ $allcaps=TrattaModel::get_all_caps()->fetch_all(MYSQLI_ASSOC);
   <label for="cap_dest" class="form-label">Cap</label>
                 <select class="form-select selectpicker" data-live-search="true" id="cap_dest" required>
                 <?php foreach($allcaps as $row) { ?>
-                    <option class=<?php if ($row["Dis"]==1) echo " Dis ";else echo " "; if($row["SCS"]==1) echo " scs ";else echo " ";  ?>     id =<?=$row["id"] ?> data-tokens=<?=$row["CAP"] ?> ><?=$row["CAP"]." ".$row["Prov"]  ?></option>
+                    <option class=<?php if ($row["Dis"]==1) echo " Dis ";else echo " "; if($row["SCS"]==1) echo " scs ";else echo " ";  ?>     id =<?=$row["id"] ?> data-tokens=<?=$row["CAP"] ?> ><?=$row["CAP"]." ".$row["Descrizione"]  ?></option>
                   <?php }?>
                 
                 </select>
