@@ -1,6 +1,14 @@
-<?php include('_header.php'); ?> 
-<?php include('_sidebar.php'); 
-
+    <!-- Dashboard -->
+    <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
+    <!-- Vertical Navbar -->
+<?php
+//admin check session e butta fuori
+if (session_status() === PHP_SESSION_NONE) 
+{
+    session_start();
+}
+//require_once "./models/VoucherModel.php";
+include "./reserved-navbar.php";
 include_once "./utils/company_name_selector.php";
 require_once "./models/UserModel.php";
 require_once "./models/SubscriptionModel.php";
@@ -8,13 +16,23 @@ $customers=UserModel::get_all()->fetch_all(MYSQLI_ASSOC);
 $history=SubscriptionModel::get_history()->fetch_all(MYSQLI_ASSOC);
 ?>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css"></script>
+
+
+
+
+<div class="h-screen flex-grow-1 overflow-y-lg-auto">
+<main class="py-6 bg-surface-secondary">
+<div class="container">
         <h1 class="text-center">PAGINA ADMIN</h1>
         <br>
     <h2><b>I TUOI CLIENTI</b></h2><br>
-    <div class="card">
-  <div class="table-responsive">
-    <table class="table align-items-center mb-0"  id="myCustomerTableBody">
-      <thead>
+    <div class="table-responsive">
+   <table id="myCustomerTable" class="table table-bordered table-striped"> 
     <thead>
       <tr>
           <th>Nome Cognome</th>
@@ -26,7 +44,7 @@ $history=SubscriptionModel::get_history()->fetch_all(MYSQLI_ASSOC);
           <th>Cellulare</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="myCustomerTableBody">
     <?php foreach($customers as $row) { ?>
       <tr>
       <td><?=$row["Ragione_sociale"] ?></td>
@@ -39,15 +57,13 @@ $history=SubscriptionModel::get_history()->fetch_all(MYSQLI_ASSOC);
       </tr>
     <?php }?>
     </tbody>
-    </table>
+  </table>
   </div>
-</div>
 <br><br><br>
   <h2><b>STORICO ABBONAMENTI</b></h2><br>
     <!--<input class="form-control" id="myInputCustomerTable" type="text" placeholder="Cerca.."><br>-->
-    <div class="card">
-  <div class="table-responsive">
-    <table class="table align-items-center mb-0"  id="myHistoryTableBody">
+    <div class="table-responsive">
+   <table id="myHistoryTable" class="table table-bordered table-striped"> 
     <thead>
       <tr>
           <th>Codice</th>
@@ -62,7 +78,7 @@ $history=SubscriptionModel::get_history()->fetch_all(MYSQLI_ASSOC);
           <th>Condizioni di pagamento</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="myHistoryTableBody">
     <?php foreach($history as $row) { ?>
       <tr>
       <td><?=$row["Codice"] ?></td>
@@ -78,9 +94,8 @@ $history=SubscriptionModel::get_history()->fetch_all(MYSQLI_ASSOC);
       </tr>
     <?php }?>
     </tbody>
-    </table>
+  </table>
   </div>
-</div>
 
 
 </div>
@@ -90,7 +105,43 @@ $history=SubscriptionModel::get_history()->fetch_all(MYSQLI_ASSOC);
 
 
 
-<script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
-  
 
-<?php include('_footer.php'); ?>
+<script>
+$(document).ready(function () {
+  $('#myCustomerTable').DataTable();
+  $('#myHistoryTable').DataTable();
+  
+ // $('.dataTables_length').addClass('bs-select');
+});
+
+$(document).ready(function(){
+  $("#myInputCustomerTableBody").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myCustomerTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+ 
+</script>
+<style>
+
+h1 {
+  font-size: 70px;
+  font-weight: 600;
+  background-image: linear-gradient(to left, #553c9a, #b393d3);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+h2 {
+  font-family: Georgia;
+  font-size: 40px;
+  font-weight: 400;
+  background-image: linear-gradient(to left, #7FFFD4, #00008B);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+</style>
