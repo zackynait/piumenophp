@@ -105,7 +105,7 @@ $mysubs=SubscriptionModel::get_my_voucher( $_SESSION['id'])->fetch_all(MYSQLI_AS
 
 function all_validation(){
   event.preventDefault();
-          event.stopPropagation();
+  event.stopPropagation();
   //console.log(cqr);
   a=$("input[name='sortType']:checked").val();
   b=$("input[name='qty']:checked").val();

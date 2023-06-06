@@ -1,7 +1,7 @@
 <?php
 // Include configuration file 
-require_once 'config.php';
-include 'dbConnect.php';
+require_once '../config.php';
+include '../dbConnect.php';
 
     $pageview = $_GET['getID']; 
 	$selectproduct =mysqli_query($db_conn, "select * from abbonamentocx where id = '$pageview' ");
@@ -30,7 +30,7 @@ if(!empty($_GET['session_id'])){
         $statusMsg = 'Your Payment has been Successful!';
     }else{
         // Include Stripe PHP library 
-        require_once 'stripe-php/init.php';
+        require_once '../stripe-php/init.php';
         
         // Set API key
         \Stripe\Stripe::setApiKey(STRIPE_API_KEY);
@@ -74,11 +74,13 @@ if(!empty($_GET['session_id'])){
                     
 					 // Insert transaction data into the database 
                     $name_message=$rowproduct['Quantita_lettere_di_vettura'];
-					$sql = "INSERT INTO orders(name,email,item_name,item_number,item_price,item_price_currency,paid_amount,paid_amount_currency,txn_id,payment_status,checkout_session_id,created,modified) VALUES('".$name."','".$email."','".$name_message."','".$rowproduct['id']."','".$rowproduct['Costo carnet totale iva inclusa']."','".$paidCurrency."','".$paidAmount."','".$paidCurrency."','".$transactionID."','".$paymentStatus."','".$session_id."',NOW(),NOW())"; 
+                     $c_id=$rowproduct['Codice'];
+					$sql = "INSERT INTO orders(name,costumer_id,email,item_name,item_number,item_price,item_price_currency,paid_amount,paid_amount_currency,txn_id,payment_status,checkout_session_id,created,modified) VALUES('".$name."','". $c_id."','".$email."','".$name_message."','".$rowproduct['id']."','".$rowproduct['Costo carnet totale iva inclusa']."','".$paidCurrency."','".$paidAmount."','".$paidCurrency."','".$transactionID."','".$paymentStatus."','".$session_id."',NOW(),NOW())";
 					
                     $insert = $db_conn->query($sql);
                     $paymentID = $db_conn->insert_id;
-                    
+        $sql = "INSERT INTO history_vouchers(weight_range,quantity, status,timestamp,user_id,subscription_id ) VALUES('none','".$name_message."','".$paymentStatus."',NOW(),"."'". $c_id."','".$rowproduct['id']."')  ON DUPLICATE KEY UPDATE timestamp=NOW(), quantity=CAST(quantity AS INT)+".strval($name_message)."  ";
+                    $insert = $db_conn->query($sql);
 						$ordStatus = 'success';
 						$statusMsg = 'Your Payment has been Successful!';
                    
@@ -98,7 +100,8 @@ if(!empty($_GET['session_id'])){
 	$statusMsg = "Invalid Request!";
 }
 ?>
-
+<?php include('../_header.php'); ?>
+<?php include('../_sidebar.php'); ?>
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -110,19 +113,51 @@ if(!empty($_GET['session_id'])){
 <body class="App">
 	<h1 class="<?php echo $ordStatus; ?>"><?php echo $statusMsg; ?></h1>
 	<div class="wrapper">
+	<h4>Payment Information</h4>
 		<?php if(!empty($paymentID)){ ?>
-			<h4>Payment Information</h4>
-			<p><b>Reference Number:</b> <?php echo $paymentID; ?></p>
-			<p><b>Transaction ID:</b> <?php echo $transactionID; ?></p>
-			<p><b>Paid Amount:</b> <?php echo $paidAmount.' '.$paidCurrency; ?></p>
-			<p><b>Payment Status:</b> <?php echo $paymentStatus; ?></p>
-				
+
+
+			  <div class="form-group disabled">
+                            <label class="form-control-label" for="cldv"><b>Reference Number:</b></label>
+                            <div class="input-group disabled"> <input type="text" class="form-control" id="cldv" disabled value=<?php echo $paymentID; ?>></div>
+                        </div>
+
+			 <div class="form-group disabled">
+                            <label class="form-control-label" for="cldv"><b>Transaction Id:</b></label>
+                            <div class="input-group disabled"> <input type="text" class="form-control" id="cldv1" disabled value= <?php echo $transactionID; ?>></div>
+                        </div>
+			 <div class="form-group disabled">
+                            <label class="form-control-label" for="cldv"><b>Paid Amount:</b></label>
+                            <div class="input-group disabled"> <input type="text" class="form-control" id="cldv1" disabled value= <?php echo $paidAmount.' '.$paidCurrency; ?>></div>
+                        </div>
+              <div class="form-group disabled">
+                            <label class="form-control-label" for="cldv"><b>Payment Status:</b></label>
+                            <div class="input-group disabled"> <input type="text" class="form-control" id="cldv1" disabled value= <?php echo $paymentStatus; ?>></div>
+                        </div>
 			<h4>Product Information</h4>
-			<p><b>id:</b> <?php echo $rowproduct['id']; ?></p>
-            <p><b>numero lettere di vettura:</b> <?php echo $rowproduct['Quantita_lettere_di_vettura'] ?></p>
-			<p><b>prezzo:</b> <?php echo $rowproduct['Costo carnet totale iva inclusa'].' €' ?></p>
-		<?php } ?>
-		<a href="dashboard.php" class="btn-link">Back to Product Page</a>
+			 <div class="form-group disabled">
+                            <label class="form-control-label" for="cldv"><b>id:</b></label>
+                            <div class="input-group disabled"> <input type="text" class="form-control" id="cldv1" disabled value=<?php echo $rowproduct['id']; ?>></div>
+                        </div>
+              <div class="form-group disabled">
+                            <label class="form-control-label" for="cldv"><b>numero lettere di vettura:</b></label>
+                            <div class="input-group disabled"> <input type="text" class="form-control" id="cldv1" disabled value= <?php echo $rowproduct['Quantita_lettere_di_vettura'] ?>></div>
+                        </div>
+
+                <div class="form-group disabled">
+                            <label class="form-control-label" for="cldv"><b>prezzo:</b></label>
+                            <div class="input-group disabled"> <input type="text" class="form-control" id="cldv1" disabled value= <?php echo $rowproduct['Costo carnet totale iva inclusa'].' €' ?>></div>
+                        </div>
+		<?php }else{
+		 ?>
+		 <p> Errore nel sistema. contattare la nostra assistenza</p>
+		 <?php }	 ?>
+		  <div class="button-row d-flex mt-4">
+		             <form action="dashboard.php">
+                <button href="dashboard.php"  class="btn btn-primary ml-auto js-btn-next"  type="submit"    id="backdash">Back to Product Page</button>
+                        </form>
+          </div>
+
 	</div>
 </body>
 </html>

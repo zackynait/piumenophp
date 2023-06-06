@@ -7,7 +7,6 @@ require_once "./models/SubscriptionModel.php";
 $customers=UserModel::get_all()->fetch_all(MYSQLI_ASSOC);
 $history=SubscriptionModel::get_history()->fetch_all(MYSQLI_ASSOC);
 ?>
-
         <h1 class="text-center">PAGINA ADMIN</h1>
         <br>
     <h2><b>I TUOI CLIENTI</b></h2><br>
@@ -70,7 +69,7 @@ $history=SubscriptionModel::get_history()->fetch_all(MYSQLI_ASSOC);
       <td><?=$row["Tipo_di_abbonamento"] ?></td>
       <td><?=$row["Quantita carnet"] ?></td>
       <td><?=$row["Costo per lettera di vettura"] ?></td>
-      <td><?=$row["Quantita' lettere di vettura"] ?></td>
+      <td><?=$row["Quantita_lettere_di_vettura"] ?></td>
       <td><?=$row["Costo imponibile Carnet"] ?></td>
       <td><?=$row["Diritto Fisso imponibile"] ?></td>
       <td><?=$row["Costo carnet totale iva inclusa"] ?></td>

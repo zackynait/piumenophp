@@ -1,21 +1,18 @@
 <?php if (session_status() === PHP_SESSION_NONE) {session_start();} ?>
-<?php include('_header.php'); ?>
-<?php include('_sidebar.php'); ?>
+<?php include('../_header.php'); ?>
+<?php include('../_sidebar.php'); ?>
 
 <script src="https://js.stripe.com/v3/"></script>
 <?php
-// <button type="button" id="btn-secondary" class="btn btn-lg btn-secondary" data-toggle="popover" title="sottoscrizione nuovo abbonamento" data-content="il tipo di voucher non rientra nel suo contratto stipulato,se accetta, riceverà il contratto con le nuove modifiche direttamente a casa. per ulteriori informazioni ci contatti telefonicamente">?</button>
-require_once "./models/VoucherModel.php";
-require_once "./models/SubscriptionModel.php";
-require_once "./models/WeightsModel.php";
+require_once "../models/VoucherModel.php";
+require_once "../models/SubscriptionModel.php";
+require_once "../models/WeightsModel.php";
 
 $vouchers=VoucherModel::get_all()->fetch_all(MYSQLI_ASSOC);
 $subscriptions=SubscriptionModel::get_all()->fetch_all(MYSQLI_ASSOC);
 $weights=WeightsModel::get_all()->fetch_all(MYSQLI_ASSOC);
-$mysubs=SubscriptionModel::get_my_voucher( $_SESSION['id'])->fetch_all(MYSQLI_ASSOC); //in base all'utente-- if problem mandalo su un'altra pagina stampa id
-
+$mysubs=SubscriptionModel::get_my_voucher( $_SESSION['id'])->fetch_all(MYSQLI_ASSOC);
 ?>
-
 
 <div class="multisteps-form">
   <!--progress bar-->
@@ -24,7 +21,6 @@ $mysubs=SubscriptionModel::get_my_voucher( $_SESSION['id'])->fetch_all(MYSQLI_AS
       <div class="multisteps-form__progress">
         <button class="multisteps-form__progress-btn js-active" type="button" title="Voucher selection">Voucher</button>
         <button class="multisteps-form__progress-btn" type="button" title="Pagamento">Pagamento</button>
-
       </div>
     </div>
   </div>
@@ -93,9 +89,9 @@ $mysubs=SubscriptionModel::get_my_voucher( $_SESSION['id'])->fetch_all(MYSQLI_AS
   </div>
 </div>
 
-<?php include('_footer.php'); ?>
+<?php include('../_footer.php'); ?>
 
-<script src = "./assets/js/core/multiform.js"></script>
+<script src = "../assets/js/core/multiform.js"></script>
 
 
 <script>
@@ -229,7 +225,7 @@ var createCheckoutSession = function (stripe) {
     var qta=cqr["Quantita_lettere_di_vettura"];
     var name_ab= qta+ " lettere di vettura  di tipo " +ab_name+" ";
 
-    return fetch("stripe_charge.php", {
+    return fetch("../stripe_charge.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

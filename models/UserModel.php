@@ -21,6 +21,41 @@ class UserModel
     }
 
 
+    public static function get_orders($id){
+        $connection = new mysqli("localhost","root","","users");
+
+        // Check connection
+        if ($connection -> connect_errno) {
+          echo "Failed to connect to MySQL: " . $connection -> connect_error;
+          exit();
+        }        $sql = "SELECT * FROM orders where costumer_id like ?";
+        $stmt = $connection->prepare($sql);
+        $stmt->bind_param("s", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stmt->close();
+        $connection->close();
+        return $result;
+    }
+     public static function get_vouchers($id){
+        $connection = new mysqli("localhost","root","","users");
+
+        // Check connection
+        if ($connection -> connect_errno) {
+          echo "Failed to connect to MySQL: " . $connection -> connect_error;
+          exit();
+        }        $sql = "SELECT * FROM history_vouchers where user_id like ?";
+        $stmt = $connection->prepare($sql);
+        $stmt->bind_param("s", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stmt->close();
+        $connection->close();
+        return $result;
+    }
+
+
+
     public static function find_by_email($email){
         $connection = new mysqli("localhost","root","","users");
 

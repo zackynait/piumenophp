@@ -13,12 +13,7 @@ if ($connection -> connect_errno) {
   echo "Failed to connect to MySQL: " . $connection -> connect_error;
   exit();
 }
-
-
 $error = "";
-
-    // username and password sent from form
-
     $myusername = strtolower(mysqli_real_escape_string($connection, $_POST['username']));
     $mypassword = mysqli_real_escape_string($connection, $_POST['password']);
     $sql = "";
@@ -27,12 +22,8 @@ $error = "";
         $error = $user["error"];
         echo $error;
     }else{
-        //login successful
-       
-     
         $_SESSION['id'] = $user['Codice'];
-        header("location: dashboard.php");
-      
+        header("location: ../piumenophp/pages/dashboard.php");
     }
 
 ?>
