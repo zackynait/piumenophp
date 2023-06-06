@@ -5,7 +5,8 @@ include '../dbConnect.php';
 
     $pageview = $_GET['getID']; 
 	$selectproduct =mysqli_query($db_conn, "select * from abbonamentocx where id = '$pageview' ");
-    $rowproduct =mysqli_fetch_array($selectproduct,MYSQLI_ASSOC); 			
+    $rowproduct =mysqli_fetch_array($selectproduct,MYSQLI_ASSOC);
+    $sub_name=mysqli_fetch_array(mysqli_query($db_conn, "SELECT descr FROM `subscriptions` where type = '".$rowproduct['Tipo_di_abbonamento']."' limit 1"),MYSQLI_ASSOC);
 			
     $payment_id = $statusMsg = '';
     $ordStatus = 'error';
@@ -71,16 +72,15 @@ if(!empty($_GET['session_id'])){
                     $paidAmount = ($paidAmount/100);
                     $paidCurrency = $intent->currency;
                     $paymentStatus = $intent->status;
-                    
-					 // Insert transaction data into the database 
+                    					 // Insert transaction data into the database
                     $name_message=$rowproduct['Quantita_lettere_di_vettura'];
                      $c_id=$rowproduct['Codice'];
-					$sql = "INSERT INTO orders(name,costumer_id,email,item_name,item_number,item_price,item_price_currency,paid_amount,paid_amount_currency,txn_id,payment_status,checkout_session_id,created,modified) VALUES('".$name."','". $c_id."','".$email."','".$name_message."','".$rowproduct['id']."','".$rowproduct['Costo carnet totale iva inclusa']."','".$paidCurrency."','".$paidAmount."','".$paidCurrency."','".$transactionID."','".$paymentStatus."','".$session_id."',NOW(),NOW())";
-					
+					$sql = "INSERT INTO orders(name,costumer_id,email,item_name,item_number,item_price,item_price_currency,paid_amount,paid_amount_currency,txn_id,payment_status,checkout_session_id,created,modified) VALUES('".$name."','". $c_id."','".$email."','".$name_message."','".$rowproduct['Tipo_di_abbonamento']."','".$rowproduct['Costo carnet totale iva inclusa']."','".$paidCurrency."','".$paidAmount."','".$paidCurrency."','".$transactionID."','".$paymentStatus."','".$session_id."',NOW(),NOW())";
                     $insert = $db_conn->query($sql);
                     $paymentID = $db_conn->insert_id;
-        $sql = "INSERT INTO history_vouchers(weight_range,quantity, status,timestamp,user_id,subscription_id ) VALUES('none','".$name_message."','".$paymentStatus."',NOW(),"."'". $c_id."','".$rowproduct['id']."')  ON DUPLICATE KEY UPDATE timestamp=NOW(), quantity=CAST(quantity AS INT)+".strval($name_message)."  ";
-                    $insert = $db_conn->query($sql);
+
+                    $sql = "INSERT INTO history_vouchers(weight_range,quantity, status,timestamp,user_id,tipo_di_abbonamento,subscription_id ) VALUES('none','".$name_message."','".$paymentStatus."',NOW(),'". $c_id."','".$sub_name["descr"]."','".$rowproduct['Tipo_di_abbonamento']."')  ON DUPLICATE KEY UPDATE timestamp=NOW(), quantity=CAST(quantity AS INT)+".strval($name_message)."  ";
+                    $db_conn->query($sql);
 						$ordStatus = 'success';
 						$statusMsg = 'Your Payment has been Successful!';
                    

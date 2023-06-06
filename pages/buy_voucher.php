@@ -103,6 +103,7 @@ console.log(e);
     e.stopPropagation();
     a=$(".package").val();
     b=$(".quantity").val();
+    console.log("select");
   console.log(a);
   console.log(b);
   cqr={};
@@ -119,12 +120,12 @@ console.log(e);
                 $(".contract-check").removeClass("show");
                 found=true;
                 cqr=value;
-                ab_name=$(".package").attr("id");
-                console.log("found");
+                ab_name=$(".package").children(":selected").attr("id");
+                console.log("found ");
                 }
               }
             });
-            if (found==false){$(".contract-check").removeClass("hide");  $(".contract-check").addClass("show");ab_name=""; }
+            if (found==false){$(".contract-check").removeClass("hide");  $(".contract-check").addClass("show"); }
             else{ $(".contract-check").addClass("hide");$(".contract-check").removeClass("show");  } }
 });
 </script>
@@ -205,21 +206,21 @@ console.log(e);
                         </div>'
                         );
             console.log("appeso");
-            }else{
+            }else
+            {
              e.preventDefault();
              e.stopPropagation();
-              }
-
+           }
 }
 </script>
 
 <script>
 function paying(){
 //$('body').on('click', ".payButton",function(e) {
-  console.log("clicked on paying");
-var responseContainer = document.getElementById('paymentResponse');
-// Create a Checkout Session with the selected product
-var createCheckoutSession = function (stripe) {
+    console.log("clicked on paying");
+    var responseContainer = document.getElementById('paymentResponse');
+    // Create a Checkout Session with the selected product
+    var createCheckoutSession = function (stripe) {
     console.log("sta per checkout");
     var price=cqr["Costo carnet totale iva inclusa"];
     var qta=cqr["Quantita_lettere_di_vettura"];
@@ -255,8 +256,6 @@ var handleResult = function (result) {
 
 // Specify Stripe publishable key to initialize Stripe.js
 var stripe = Stripe('<?php echo STRIPE_PUBLISHABLE_KEY; ?>');
-
-
   $(this).disabled = true;
   $(this).textContent = 'Attendi...';
     createCheckoutSession().then(function (data) {

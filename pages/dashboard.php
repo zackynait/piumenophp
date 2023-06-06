@@ -1,8 +1,8 @@
 <?php if (session_status() === PHP_SESSION_NONE) {session_start();} ?>
 <?php include('../_header.php'); ?>
 <?php include('../_sidebar.php'); ?>
-<?php
 
+<?php
 include_once "../utils/company_name_selector.php";
 require_once "../models/UserModel.php";
 require_once "../models/SubscriptionModel.php";
@@ -47,7 +47,6 @@ $av_vouchers=UserModel::get_vouchers($_SESSION['id'])->fetch_all(MYSQLI_ASSOC);
       <td><?=$row["txn_id"] ?></td>
       <td><?=$row["payment_status"] ?></td>
       <td><?=$row["created"] ?></td>
-
       </tr>
     <?php }?>
     </tbody>
@@ -60,17 +59,17 @@ $av_vouchers=UserModel::get_vouchers($_SESSION['id'])->fetch_all(MYSQLI_ASSOC);
    <table id="myHistoryTable" class="table table-bordered table-striped"> 
     <thead>
       <tr>
-          <th>Tipo_di_abbonamento</th>
-           <th>Quantità disponibile</th>
-          <th>Data aggiornamento.</th>
+          <th>Tipo Di Abbonamento</th>
+           <th>Quantità Disponibile</th>
+          <th>Ultima Data Aggiornamento</th>
       </tr>
     </thead>
     <tbody id="myHistoryTableBody">
     <?php foreach($av_vouchers as $row) { ?>
       <tr>
-      <td><?=$row["quantity"] ?></td>
-      <td><?=$row["Subscription_id"] ?></td>
-      <td><?=$row["timestamp"] ?></td>
+      <td><?=$row["tipo_di_abbonamento"] ?></td>
+      <td><?=$row["quantity"]?></td>
+      <td><?=$row["timestamp"]?></td>
       </tr>
     <?php }?>
     </tbody>
@@ -90,8 +89,7 @@ $av_vouchers=UserModel::get_vouchers($_SESSION['id'])->fetch_all(MYSQLI_ASSOC);
 $(document).ready(function () {
   $('#myCustomerTable').DataTable();
   $('#myHistoryTable').DataTable();
-  
- // $('.dataTables_length').addClass('bs-select');
+   $('.dataTables_length').addClass('bs-select');
 });
 
 $(document).ready(function(){
@@ -105,7 +103,6 @@ $(document).ready(function(){
  
 </script>
 <style>
-
 h1 {
   font-size: 70px;
   font-weight: 600;
@@ -114,7 +111,6 @@ h1 {
   background-clip: text;
   -webkit-background-clip: text;
 }
-
 h2 {
   font-family: Georgia;
   font-size: 40px;
