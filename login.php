@@ -33,6 +33,11 @@ if (session_status() === PHP_SESSION_NONE)
                   <p class="mb-0">Inserisci email e password per accedere</p>
                 </div>
                 <div class="card-body">
+                  <?php
+                    if(isset($_GET['message'])== 'error'){
+                      echo '<div class="alert alert-danger" role="alert">Username o password errati!</div>';
+                    }
+                  ?>
                   <form role="form" method="POST" action="./checklogin.php">
                     <label>Email</label>
                     <div class="mb-3">
