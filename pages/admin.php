@@ -57,7 +57,7 @@ $history=SubscriptionModel::get_history()->fetch_all(MYSQLI_ASSOC);
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link  <?=$dashboard?>" href="../pages/dashboard.php">
+          <a class="nav-link" href="../pages/dashboard.php">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>shop </title>
@@ -77,7 +77,7 @@ $history=SubscriptionModel::get_history()->fetch_all(MYSQLI_ASSOC);
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " <?=$dashboard?> href="../pages/buy_voucher.php">
+          <a class="nav-link" href="../pages/buy_voucher.php">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>office</title>
@@ -117,7 +117,7 @@ $history=SubscriptionModel::get_history()->fetch_all(MYSQLI_ASSOC);
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" <?=$cart?> href="../pages/buy_track.php">
+          <a class="nav-link" href="../pages/buy_track.php">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>box-3d-50</title>
