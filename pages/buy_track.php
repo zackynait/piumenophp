@@ -397,9 +397,11 @@ $allcaps=TrattaModel::get_all_caps()->fetch_all(MYSQLI_ASSOC);
 					<!-- End Navbar -->
           <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
           <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+          
           <div class="container-fluid py-4">
-            <div class="row">
-            <div class="container">
+      <div class="row">
+<div class="multisteps-form">
+  
 <div class="stepwizard">
     <div class="stepwizard-row setup-panel">
         <div class="stepwizard-step">
@@ -459,6 +461,78 @@ $allcaps=TrattaModel::get_all_caps()->fetch_all(MYSQLI_ASSOC);
     </div>
 </form>
 </div>
+<script>
+function paying(){
+//$('body').on('click', ".payButton",function(e) {
+    console.log("clicked on paying");
+    var responseContainer = document.getElementById('paymentResponse');
+    // Create a Checkout Session with the selected product
+    var createCheckoutSession = function (stripe) {
+    console.log("sta per checkout");
+    var price=cqr["Costo carnet totale iva inclusa"];
+    var qta=cqr["Quantita_lettere_di_vettura"];
+    var name_ab= qta+ " lettere di vettura  di tipo " +ab_name+" ";
+
+    return fetch("../stripe_charge.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            checkoutSession: 1,
+			Name: name_ab,
+			ID:cqr["id"],
+			Price:price,
+			Currency:"EUR",
+        }),
+    }).then(function (result) {
+        console.log("ret checkout s");
+        console.log(result);
+        return result.json();
+    });
+};
+
+// Handle any errors returned from Checkout
+var handleResult = function (result) {
+    if (result.error) {
+        responseContainer.innerHTML = '<p>'+result.error.message+'</p>';
+    }
+    $(this).disabled = false;
+    $(this).textContent = 'Acquista';
+};
+
+// Specify Stripe publishable key to initialize Stripe.js
+var stripe = Stripe('<?php echo STRIPE_PUBLISHABLE_KEY; ?>');
+  $(this).disabled = true;
+  $(this).textContent = 'Attendi...';
+    createCheckoutSession().then(function (data) {
+        if(data.sessionId){
+            stripe.redirectToCheckout({
+                sessionId: data.sessionId,
+            }).then(handleResult);
+        }else{
+            handleResult(data);
+        }
+    });
+
+
+}
+</script>
+
+
+
+
+
+
+<style>
+.hide{
+display: none;
+}
+.show{
+display: block;
+}
+</style>
+
 
 <script>
   $(document).ready(function () {
